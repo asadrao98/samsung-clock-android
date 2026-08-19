@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      Permissions are declared phase by phase, as the feature that needs them lands.
+      This app must never request INTERNET or ACCESS_NETWORK_STATE: it is fully offline.
+      Verify that after every dependency change by dumping the merged manifest.
+    -->
+
+    <!-- Phase 2: alarms must survive a reboot, which means re-arming them at boot. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!--
+      Exact alarms. Two permissions cover two eras of Android:
+        - API 31-32: SCHEDULE_EXACT_ALARM, which the user can revoke. Capped at 32 so it is
+          not requested where the better permission below applies.
+        - API 33+:   USE_EXACT_ALARM, granted on install to apps whose core function is an
+          alarm clock. That is exactly this app, so it qualifies.
+      Below API 31 neither is needed.
+    -->
+    <uses-permission
+        android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <!-- Phase 3: ringing. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--
+      Lets the ringing screen come up over the lockscreen. If the user revokes it the system
+      degrades the full-screen intent to a heads-up notification, which is why that notification
+      carries working Snooze and Dismiss actions.
+    -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!--
+      The ringing service plays audio the user must hear, so mediaPlayback is the honest type.
+      Android 14 requires the type to be declared as a permission as well as on the service.
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <application
+        android:name=".ClockApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SamsungClock">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|locale|layoutDirection|fontScale|density"
+            android:theme="@style/Theme.SamsungClock"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          The full-screen alarm. A separate task and no recents entry: it is a modal interruption,
+          not somewhere the user navigates back to.
+        -->
+        <activity
+            android:name=".alarm.AlarmRingingActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.SamsungClock.Ringing"
+            android:turnScreenOn="true"
+            tools:targetApi="27"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|locale|layoutDirection|fontScale|density" />
+
+        <!-- The finished-timer alert. Same treatment as the alarm's. -->
+        <activity
+            android:name=".alarm.TimerRingingActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.SamsungClock.Ringing"
+            android:turnScreenOn="true"
+            tools:targetApi="27"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|locale|layoutDirection|fontScale|density" />
+
+        <!--
+          The home-screen analog clock. Ticked by the framework, so it needs no updates from us.
+        -->
+        <receiver
+            android:name=".widget.AnalogClockWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/analog_clock_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".alarm.TimerReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".alarm.TimerRingService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <service
+            android:name=".alarm.AlarmRingService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <!--
+          Not exported: only AlarmManager delivers to it, via a PendingIntent this app created.
+          Leaving it exported would let any app fire or advance the user's alarms.
+        -->
+        <receiver
+            android:name=".alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--
+          This one must be exported, because the sender is the system rather than this app.
+          It is guarded by the action filter plus an explicit allow-list check in the receiver.
+        -->
+        <receiver
+            android:name=".alarm.SystemEventReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Clock</string>
+
+    <!-- Bottom navigation -->
+    <string name="tab_alarm">Alarm</string>
+    <string name="tab_world_clock">World clock</string>
+    <string name="tab_stopwatch">Stopwatch</string>
+    <string name="tab_timer">Timer</string>
+
+    <!-- Notification channels -->
+    <string name="channel_alarm_name">Alarms</string>
+    <string name="channel_alarm_description">Ringing alarms</string>
+    <string name="channel_upcoming_name">Upcoming alarms</string>
+    <string name="channel_upcoming_description">The next alarm that will ring</string>
+
+    <!-- Ringing -->
+    <string name="alarm_default_title">Alarm</string>
+    <string name="action_snooze">Snooze</string>
+    <string name="action_dismiss">Dismiss</string>
+
+    <string name="channel_timer_name">Timers</string>
+    <string name="channel_timer_description">Timers that have finished</string>
+    <string name="timer_finished">Timer finished</string>
+    <string name="timer_finished_text">Time is up</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_add_minute">+1 min</string>
+
+    <!-- Widget -->
+    <string name="widget_analog_clock_description">Analog clock</string>
+</resources>

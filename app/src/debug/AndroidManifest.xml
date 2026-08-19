@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!--
+          Debug-only test hook. It lives in src/debug, so it is compiled into the debug build only
+          and cannot reach a release APK.
+
+          It exists because verifying the ringing path means locking the screen, and a locked screen
+          cannot be driven over adb — leaving no way to create the alarm for the next attempt. This
+          lets the alarm be scheduled without touching the UI.
+        -->
+        <receiver
+            android:name="com.asadrao.clock.debug.DebugAlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.asadrao.clock.DEBUG_SCHEDULE_ALARM" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

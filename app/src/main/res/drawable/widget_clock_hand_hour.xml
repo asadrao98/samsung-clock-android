@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hour hand. The system rotates this drawable about its own centre, so the artwork is a full
+  square with the hand drawn from the middle upwards. Original artwork.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+    <path
+        android:fillColor="#FFFAFAFF"
+        android:pathData="M114,132 h12 v-62 a6,6 0 0 0 -12,0 Z" />
+    <path android:fillColor="#FFFAFAFF" android:pathData="M120,113 m-9,0 a9,9 0 1 0 18,0 a9,9 0 1 0 -18,0" />
+</vector>

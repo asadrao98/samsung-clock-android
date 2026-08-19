@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Second hand, in the accent colour, with a short counterweight past the centre. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+    <path
+        android:fillColor="#FF0381FE"
+        android:pathData="M118,148 h4 v-118 a2,2 0 0 0 -4,0 Z" />
+    <path android:fillColor="#FF0381FE" android:pathData="M120,120 m-7,0 a7,7 0 1 0 14,0 a7,7 0 1 0 -14,0" />
+</vector>

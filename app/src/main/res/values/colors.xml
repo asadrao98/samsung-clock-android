@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Window background only: it paints the window before Compose draws its first frame,
+      so it must match the Compose page background exactly or launch shows a flash.
+      Keep in sync with ClockColors.pageBackground in ui/theme/Color.kt.
+    -->
+    <color name="window_background">#FFF5F5F5</color>
+    <color name="ic_launcher_background">#FF0381FE</color>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The widget, with a sweeping second hand.
+
+  In its own layout-v31 folder because `android:hand_second` only exists from API 31. The base
+  layout omits it, so an older device still gets a correct hour/minute clock rather than failing to
+  inflate on an attribute it does not know.
+
+  The second hand earns its place: it is what makes the widget visibly *live* at a glance, which is
+  the whole reason it exists. It costs nothing — the framework ticks AnalogClock itself, so this
+  widget never wakes the app.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/widget_root"
+    android:padding="4dp">
+
+    <AnalogClock
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:dial="@drawable/widget_clock_dial"
+        android:hand_hour="@drawable/widget_clock_hand_hour"
+        android:hand_minute="@drawable/widget_clock_hand_minute"
+        android:hand_second="@drawable/widget_clock_hand_second"
+        android:contentDescription="@string/widget_analog_clock_description" />
+</FrameLayout>

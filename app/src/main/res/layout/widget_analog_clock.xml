@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The live analog clock widget.
+
+  Uses the platform AnalogClock deliberately. It is ticked by the framework itself, so the widget
+  stays accurate to the second with **no periodic updates from us at all** — no alarms, no jobs, no
+  battery cost. Redrawing a bitmap every minute from an AppWidgetProvider would be the obvious
+  alternative and is strictly worse on every count.
+
+  AnalogClock carries a deprecation notice, but nothing has replaced it for this job: a Compose
+  clock cannot be placed in a widget without Glance, and a Glance clock would still need waking to
+  redraw.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/widget_root"
+    android:padding="4dp">
+
+    <AnalogClock
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:dial="@drawable/widget_clock_dial"
+        android:hand_hour="@drawable/widget_clock_hand_hour"
+        android:hand_minute="@drawable/widget_clock_hand_minute"
+        android:contentDescription="@string/widget_analog_clock_description" />
+</FrameLayout>
